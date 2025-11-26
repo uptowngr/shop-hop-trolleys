@@ -24,6 +24,8 @@
       width: 100%;
       height: 100%;
     }
+
+    /* Live trolley icons */
     .trolley-icon {
       font-size: 22px;
       text-align: center;
@@ -45,6 +47,48 @@
       background-color: #16a34a; /* green */
       color: #ffffff;
     }
+
+    /* Stop markers (numbered) */
+    .stop-icon {
+      font-size: 14px;
+      text-align: center;
+      line-height: 20px;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid white;
+      box-shadow: 0 0 4px rgba(0,0,0,0.4);
+      font-weight: 600;
+    }
+    .stop-green {
+      background-color: #16a34a;
+      color: #ffffff;
+    }
+    .stop-red {
+      background-color: #dc2626;
+      color: #ffffff;
+    }
+
+    /* Parking markers */
+    .parking-icon {
+      font-size: 14px;
+      text-align: center;
+      line-height: 22px;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid white;
+      box-shadow: 0 0 4px rgba(0,0,0,0.4);
+      background-color: #2563eb; /* blue */
+      color: #ffffff;
+      font-weight: 700;
+    }
   </style>
 </head>
 <body>
@@ -62,19 +106,46 @@
     const API_URL = 'https://api3p.optimustracking.com/v1/clients/5540/position/latest';
     const API_KEY = 'ef5cc554-ab98-4719-9a28-e919ba8558f2'; // update here if you regenerate the key
 
-    // 👉 Map deviceId -> label + line color
-    // Fill these in once you know which deviceId is which trolley.
-    // Example (adjust the numbers to match your real deviceIds):
+    // 2 red line trolleys, 3 green line trolleys
     const DEVICE_CONFIG = {
-      // 525217: { label: 'Red Line 1', line: 'red' },
-      // 111111: { label: 'Red Line 2', line: 'red' },
-      // 222222: { label: 'Green Line 1', line: 'green' },
-      // 333333: { label: 'Green Line 2', line: 'green' },
-      // 444444: { label: 'Green Line 3', line: 'green' }
+      525208: { label: 'Red Line 1',   line: 'red' },
+      525217: { label: 'Red Line 2',   line: 'red' },
+      525245: { label: 'Green Line 1', line: 'green' },
+      525285: { label: 'Green Line 2', line: 'green' },
+      525979: { label: 'Green Line 3', line: 'green' }
     };
 
-    // Start roughly where the first tracker pinged
-    const map = L.map('map').setView([42.958852, -85.646653], 14);
+    // Static stops + parking
+    const STOPS = [
+      // Green line stops 1–10
+      { type: 'stop', line: 'green', number: 1,  name: 'Wealthy Theatre', address: '1130 Wealthy St SE, Grand Rapids, MI 49506', lat: 42.95548597799767, lng: -85.64078586630116 },
+      { type: 'stop', line: 'green', number: 2,  name: 'The Local Epicurean', address: '1440 Wealthy St SE, Grand Rapids, MI 49506', lat: 42.95543747164679, lng: -85.63330310261327 },
+      { type: 'stop', line: 'green', number: 3,  name: 'Rebel', address: '1555 Wealthy St SE, Grand Rapids, MI 49506', lat: 42.955609466309866, lng: -85.63046640913912 },
+      { type: 'stop', line: 'green', number: 4,  name: 'That Early Bird', address: '1445 Lake Dr SE, Grand Rapids, MI 49506', lat: 42.956775585789394, lng: -85.63366660234925 },
+      { type: 'stop', line: 'green', number: 5,  name: 'Argos Comics', address: '1405 Robinson Rd SE, Grand Rapids, MI 49506', lat: 42.95770013065598, lng: -85.63538089807697 },
+      { type: 'stop', line: 'green', number: 6,  name: 'Common Ground', address: '1319 Fulton St E, Grand Rapids, MI 49503', lat: 42.96280268384934, lng: -85.63684098864623 },
+      { type: 'stop', line: 'green', number: 7,  name: 'Shop Hop Maker Market (Fulton Street Farmers Market)', address: '1145 Fulton St E, Grand Rapids, MI 49503', lat: 42.96283637660817, lng: -85.6405724420557 },
+      { type: 'stop', line: 'green', number: 8,  name: 'Blackport Shoppes', address: '147 Diamond Ave SE, Grand Rapids, MI 49506', lat: 42.960544268310485, lng: -85.64460253640993 },
+      { type: 'stop', line: 'green', number: 9,  name: 'LaFontsee Galleries (Green Stop)', address: '833 Lake Dr SE, Grand Rapids, MI 49506', lat: 42.96082147405306, lng: -85.64826719542017 },
+      { type: 'stop', line: 'green', number: 10, name: 'Commune (Transfer to Red Line Across the Street!)', address: '954 Cherry St SE, Grand Rapids, MI 49506', lat: 42.95948956626292, lng: -85.6454147020945 },
+
+      // Red line stops 11–15
+      { type: 'stop', line: 'red', number: 11, name: 'Covet (Transfer to Green Line Across the Street!)', address: '953 Cherry St SE, Grand Rapids, MI 49506', lat: 42.95963241209495, lng: -85.64541765644533 },
+      { type: 'stop', line: 'red', number: 12, name: 'Black Dog Books & Records', address: '959 Fulton St E, Grand Rapids, MI 49503', lat: 42.962869612513174, lng: -85.6450024973559 },
+      { type: 'stop', line: 'red', number: 13, name: 'Art of the Table', address: '606 Wealthy St SE, Grand Rapids, MI 49503', lat: 42.95561281161292, lng: -85.65381533745294 },
+      { type: 'stop', line: 'red', number: 14, name: 'Basic Bee', address: '804 Wealthy St SE, Grand Rapids, MI 49506', lat: 42.95552464670077, lng: -85.6489507499085 },
+      { type: 'stop', line: 'red', number: 15, name: 'Speciation Cellars', address: '928 Wealthy St SE, Grand Rapids, MI 49506', lat: 42.95549411214267, lng: -85.64569557903121 },
+
+      // Parking (blue P)
+      { type: 'parking', name: 'Parking – LaFontsee Gallery', address: '833 Lake Dr SE, Grand Rapids, MI 49506', lat: 42.9615267330675, lng: -85.64882286194508 },
+      { type: 'parking', name: 'Parking – Trinity United Methodist Church', address: '1100 Lake Dr SE, Grand Rapids, MI 49506', lat: 42.95813071362794, lng: -85.64141574918084 },
+      { type: 'parking', name: 'Parking – Wellsprings Church of Grand Rapids', address: '811 Wealthy St SE, Grand Rapids, MI 49506', lat: 42.95576525078274, lng: -85.64819820436703 },
+      { type: 'parking', name: 'Parking – Fulton St Farmers Market', address: '1145 Fulton St E, Grand Rapids, MI 49503', lat: 42.9631669348111, lng: -85.64025646416641 },
+      { type: 'parking', name: 'Parking – Monarch Investment', address: '920 Cherry St SE, Grand Rapids, MI 49506', lat: 42.95909183834129, lng: -85.64637024190142 }
+    ];
+
+    // Map init – center roughly on Uptown
+    const map = L.map('map').setView([42.9585, -85.6450], 14);
 
     // 🗺️ Nicer free tiles: Carto Voyager
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png', {
@@ -82,7 +153,7 @@
       attribution: '&copy; OpenStreetMap &copy; CARTO'
     }).addTo(map);
 
-    // Red + green trolley icons
+    // Live trolley icons
     const redTrolleyIcon = L.divIcon({
       className: 'trolley-icon trolley-red',
       html: '🚌',
@@ -103,8 +174,8 @@
     function getConfigForDevice(id) {
       const cfg = DEVICE_CONFIG[id];
       if (cfg) return cfg;
-      // Default if not configured yet
-      return { label: 'Device ' + id, line: 'red' }; // default red if unknown
+      // Fallback if a new device ever appears
+      return { label: 'Device ' + id, line: 'red' };
     }
 
     function getIconForLine(line) {
@@ -114,10 +185,10 @@
     async function fetchPositions() {
       try {
         const res = await fetch(API_URL, {
-          headers: {
-            'accept': 'application/json',
-            'api-key': API_KEY
-          }
+        headers: {
+          'accept': 'application/json',
+          'api-key': API_KEY
+        }
         });
 
         if (!res.ok) {
@@ -158,6 +229,7 @@
           points.push([lat, lng]);
         });
 
+        // Fit view to live trolleys on first successful load
         if (firstFit && points.length > 0) {
           const bounds = L.latLngBounds(points);
           map.fitBounds(bounds, { padding: [40, 40] });
@@ -167,6 +239,52 @@
         console.error('Fetch error:', err);
       }
     }
+
+    function initStops() {
+      STOPS.forEach(stop => {
+        const lat = stop.lat;
+        const lng = stop.lng;
+
+        if (stop.type === 'stop') {
+          // Numbered stop icons
+          const cls = stop.line === 'green' ? 'stop-icon stop-green' : 'stop-icon stop-red';
+          const icon = L.divIcon({
+            className: cls,
+            html: String(stop.number),
+            iconSize: [22, 22],
+            iconAnchor: [11, 11]
+          });
+
+          const popupHtml =
+            `<strong>Stop ${stop.number} – ${stop.name}</strong><br>` +
+            `${stop.address}`;
+
+          L.marker([lat, lng], { icon })
+            .addTo(map)
+            .bindPopup(popupHtml);
+
+        } else if (stop.type === 'parking') {
+          // Blue P icons
+          const icon = L.divIcon({
+            className: 'parking-icon',
+            html: 'P',
+            iconSize: [24, 24],
+            iconAnchor: [12, 12]
+          });
+
+          const popupHtml =
+            `<strong>${stop.name}</strong><br>` +
+            `${stop.address}`;
+
+          L.marker([lat, lng], { icon })
+            .addTo(map)
+            .bindPopup(popupHtml);
+        }
+      });
+    }
+
+    // Initialize static stops + parking
+    initStops();
 
     // Initial fetch + refresh every 10 seconds (live view)
     fetchPositions();
