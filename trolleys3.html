@@ -115,6 +115,246 @@
       525979: { label: 'Green Line 3', line: 'green' }
     };
 
+    // Businesses per stop (from your CSV, including secondary stop numbers)
+    const BUSINESSES_BY_STOP = {
+      1: [
+        "Ageless Beauty",
+        "Foxtail Coffee",
+        "Hancock Grand Rapids",
+        "Louise Earl Butcher",
+        "Plant Shop, The",
+        "Sacred Springs Kombucha",
+        "Scorpion Hearts Club",
+        "The Mitten Insurance Agency",
+        "Uncle Cheetah's Soup Shop",
+        "Unwind GR",
+        "Verhey Carpets",
+      ],
+      2: [
+        "Alby & Co - Barber",
+        "Apsara Spa",
+        "Asada",
+        "Billy's Lounge",
+        "Brown Butter Creperie & Cafe",
+        "Chez Olga",
+        "Cobbler, The",
+        "Dominos Pizza",
+        "Earthly Refillery",
+        "East Building Management",
+        "Eastown Sports Bar & Grill",
+        "Gojo Ethiopian Cuisine",
+        "Harmony Brewing Company",
+        "High Tea",
+        "Local Epicurean, The",
+        "Mulligan's Pub",
+        "New Yorker Menswear",
+        "Pita House",
+        "Pizza Hut/Wing Street",
+ 	"Psycle Sam's Heady Glass",
+        "Vinyl Alchemy",
+        "Yesterdog",
+      ],
+      3: [
+        "Ash & Elm Quiltery",
+        "BC Pizza",
+        "Cottage Inn Pizza",
+        "East Building",
+        "Eastown Pediatric Dentistry",
+        "Freshwater Whale",
+        "Gino's Pizza",
+        "Gojo Ethiopian Cuisine",
+        "Harmony Brewing Company",
+        "Jimmy John's",
+        "Rebel",
+        "Smitty's Specialty Beverage",
+        "Spirit Dreams",
+        "Sticky Fingers",
+        "Tamales Mary's",
+      ],
+      4: [
+        "Connie's Cakes",
+        "El Cerrito",
+        "Gallery 154",
+        "Quarantino's Pizza",
+        "Smitty's Specialty Beverage",
+        "Spirit Dreams",
+        "Sticky Fingers",
+        "Terra Bagel",
+        "Terra GR",
+        "That Early Bird",
+        "Wax Poetic",
+        "Yours Truly Galleria",
+      ],
+      5: [
+        "Argos Comics and Used Books",
+        "Connie's Cakes",
+        "El Cerrito",
+        "Fruition Acai & Juice Bar",
+        "Funky Buddha Yoga",
+        "Matchbox Diner",
+        "Pursuit of Happiness Co",
+        "Redux Books",
+        "Terra Bagel",
+        "Terra GR",
+        "The Parlour 616",
+        "Wax Poetic",
+        "Yours Truly Galleria",
+      ],
+      6: [
+        "Drunken Monkey Smoke Shop",
+        "Rooted in Wellness",
+        "Sugah Please",
+      ],
+      7: [
+        "Always, Betti Estate Jewelry",
+        "Shop Hop Maker Market - Fulton Street Farmers Market",
+        "Mi Bella Guatemala Mi Pueblito",
+      ],
+      8: [
+        "Arts In Motion",
+        "Clothing Matters",
+        "Global Infusion",
+        "Rock Paper Scissors Consignment Boutique",
+      ],
+      // 9: [] // no businesses assigned for stop 9 (LaFontsee Green stop)
+      10: [
+        "Adored Boutique",
+        "Books & Mortar",
+        "Chateau Grand Rapids",
+        "Cherry Hill Market",
+        "Commune",
+        "Covet Leisure",
+        "Furniture City Creamery",
+        "Gemini Handmade",
+        "Grove",
+        "Harmonic Egg & Wellness GR",
+        "Honey Jewelry Co",
+        "Hopscotch Children's Store",
+        "Kava Kasa",
+        "KCM",
+        "Le Bon Macaron",
+        "Less Traveled",
+        "Mangiamos",
+        "Maru Sushi & Grill",
+        "Metal Art Studio",
+        "Nestology Shop & Studio",
+        "New Design Floral",
+        "Red Bowl",
+        "Rise Wellness Chiropractic",
+        "Ritual Wines",
+        "Sovereign Arms Tattoo Co.",
+        "Vape City Smoke Shop",
+        "Vivant Brewery & Spirits",
+      ],
+      11: [
+        "Adored Boutique",
+        "Books & Mortar",
+        "Chateau Grand Rapids",
+        "Cherry Hill Market",
+        "Commune",
+        "Covet Leisure",
+        "Furniture City Creamery",
+        "Gemini Handmade",
+        "Grove",
+        "Harmonic Egg & Wellness GR",
+        "Honey Jewelry Co",
+        "Hopscotch Children's Store",
+        "Kava Kasa",
+        "KCM",
+        "Le Bon Macaron",
+        "Less Traveled",
+        "Mangiamos",
+        "Maru Sushi & Grill",
+        "Metal Art Studio",
+        "Nestology Shop & Studio",
+        "New Design Floral",
+        "Red Bowl",
+        "Rise Wellness Chiropractic",
+        "Ritual Wines",
+        "Rock Paper Scissors Consignment Boutique",
+        "Sovereign Arms Tattoo Co.",
+        "Vape City Smoke Shop",
+        "Vivant Brewery & Spirits",
+      ],
+      12: [
+        "Black Dog Used Books and Records",
+        "Black Napkin",
+        "Blue Bridge Games",
+        "Buffalo Traders Lounge",
+        "Cakabakery, The",
+        "Ghosthouse",
+        "Hard Times",
+        "Inner Body Works and Peak Performance LLC",
+        "Little Africa Ethiopian Cuisine",
+        "MercuryHead Gallery",
+        "Rakowski Family Farm & Market",
+        "Spike & Mike's Party Store",
+        "Stovetop Coffee Roasters",
+        "The Dirty Plate Bistro",
+        "Tienda Emy Latina",
+        "Urban Exchange Consignment Boutique",
+      ],
+      13: [
+        "Art of the Table",
+        "City2Shore Real Estate",
+        "Dime and Regal",
+        "Donkey Taqueria",
+        "Eastern Kille Distillery",
+        "Good Truckin' Diner",
+        "Modish Moth and LadyMonarch",
+        "Mokaya Chocolate",
+        "Niksi Home & Floral",
+        "Roman James",
+        "Rowster Coffee",
+        "Sable Candle Company",
+        "Stoffer Home",
+        "The Grey Rabbit",
+        "Wanderlux Beauty & Wellness Co.",
+        "Wealthy Street Bakery",
+        "Winchester, The",
+      ],
+      14: [
+        "Basic Bee Boutique",
+        "Better Aged Vintage",
+        "Chartreuse Sisters",
+        "City2Shore Real Estate",
+        "Counting House, The",
+        "Dime and Regal",
+        "Donkey Taqueria",
+        "Fusion Salon",
+        "Good Truckin' Diner",
+        "Jeffrey Richard Salon",
+        "Kitchen Design Studio, Inc.",
+        "Mammoth Distillery",
+        "Modish Moth and LadyMonarch",
+        "Mokaya Chocolate",
+        "Niksi Home & Floral",
+        "Popnotch Goods",
+        "Roman James",
+        "Stoffer Home",
+        "The Grey Rabbit",
+        "Wanderlux Beauty & Wellness Co.",
+        "Woosah Outfitters",
+        "Zivio",
+      ],
+      15: [
+        "Electric Cheetah, The",
+        "Feral Mountain Co",
+        "IC Hair & Vintage",
+        "Plant Shop, The",
+        "Sacred Springs Kombucha",
+        "Scorpion Hearts Club",
+        "Speciation Cellars",
+        "Squibb Coffee & Wine Bar",
+        "Testa Rossa Pizzeria",
+        "Thai Table",
+        "Toppers Pizza",
+        "Unwind GR",
+        "Vetr Health",
+        "Zivio",
+      ],
+    };
+
     // Static stops + parking
     const STOPS = [
       // Green line stops 1–10
@@ -185,10 +425,10 @@
     async function fetchPositions() {
       try {
         const res = await fetch(API_URL, {
-        headers: {
-          'accept': 'application/json',
-          'api-key': API_KEY
-        }
+          headers: {
+            'accept': 'application/json',
+            'api-key': API_KEY
+          }
         });
 
         if (!res.ok) {
@@ -230,11 +470,10 @@
         });
 
         // Fit view to live trolleys on first successful load
-        if (firstFit && points.length > 0) {
-          const bounds = L.latLngBounds(points);
-          map.fitBounds(bounds, { padding: [40, 40] });
-          firstFit = false;
-        }
+
+	const map = L.map('map').setView([42.9588, -85.6455], 15);
+
+
       } catch (err) {
         console.error('Fetch error:', err);
       }
@@ -255,9 +494,19 @@
             iconAnchor: [11, 11]
           });
 
-          const popupHtml =
+          let popupHtml =
             `<strong>Stop ${stop.number} – ${stop.name}</strong><br>` +
             `${stop.address}`;
+
+          // If we have businesses for this stop, add them as a list
+          const businesses = BUSINESSES_BY_STOP[stop.number];
+          if (businesses && businesses.length) {
+            popupHtml += '<br><br><strong>Participating businesses at this stop:</strong><ul>';
+            businesses.forEach(name => {
+              popupHtml += `<li>${name}</li>`;
+            });
+            popupHtml += '</ul>';
+          }
 
           L.marker([lat, lng], { icon })
             .addTo(map)
