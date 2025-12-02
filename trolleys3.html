@@ -101,7 +101,7 @@
     crossorigin=""
   ></script>
 
-  <script>
+	  <script>
     // 🔐 Optimus API settings
     const API_URL = 'https://api3p.optimustracking.com/v1/clients/5540/position/latest';
     const API_KEY = 'ef5cc554-ab98-4719-9a28-e919ba8558f2'; // update here if you regenerate the key
@@ -123,12 +123,13 @@
         "Hancock Grand Rapids",
         "Louise Earl Butcher",
         "Plant Shop, The",
+        "Psycle Sam's Heady Glass",
         "Sacred Springs Kombucha",
         "Scorpion Hearts Club",
         "The Mitten Insurance Agency",
         "Uncle Cheetah's Soup Shop",
         "Unwind GR",
-        "Verhey Carpets",
+        "Verhey Carpets"
       ],
       2: [
         "Alby & Co - Barber",
@@ -147,18 +148,17 @@
         "High Tea",
         "Local Epicurean, The",
         "Mulligan's Pub",
-        "New Yorker Menswear",
+        "New Yorker Menswear, The",
         "Pita House",
         "Pizza Hut/Wing Street",
- 	"Psycle Sam's Heady Glass",
         "Vinyl Alchemy",
-        "Yesterdog",
+        "Yesterdog"
       ],
       3: [
         "Ash & Elm Quiltery",
         "BC Pizza",
         "Cottage Inn Pizza",
-        "East Building",
+        "East Building Management",
         "Eastown Pediatric Dentistry",
         "Freshwater Whale",
         "Gino's Pizza",
@@ -169,7 +169,7 @@
         "Smitty's Specialty Beverage",
         "Spirit Dreams",
         "Sticky Fingers",
-        "Tamales Mary's",
+        "Tamales Mary's"
       ],
       4: [
         "Connie's Cakes",
@@ -183,7 +183,7 @@
         "Terra GR",
         "That Early Bird",
         "Wax Poetic",
-        "Yours Truly Galleria",
+        "Yours Truly Galleria"
       ],
       5: [
         "Argos Comics and Used Books",
@@ -198,25 +198,28 @@
         "Terra GR",
         "The Parlour 616",
         "Wax Poetic",
-        "Yours Truly Galleria",
+        "Yours Truly Galleria"
       ],
       6: [
         "Drunken Monkey Smoke Shop",
         "Rooted in Wellness",
-        "Sugah Please",
+        "Sugah Please"
       ],
       7: [
         "Always, Betti Estate Jewelry",
-        "Shop Hop Maker Market - Fulton Street Farmers Market",
-        "Mi Bella Guatemala Mi Pueblito",
+        "Fulton Street Farmers Market",
+        "Mi Bella Guatemala",
+        "Mi Pueblito"
       ],
       8: [
         "Arts In Motion",
         "Clothing Matters",
         "Global Infusion",
-        "Rock Paper Scissors Consignment Boutique",
+        "Rock Paper Scissors Consignment Boutique"
       ],
-      // 9: [] // no businesses assigned for stop 9 (LaFontsee Green stop)
+      9: [
+        // nothing listed yet, LaFontsee Green stop only
+      ],
       10: [
         "Adored Boutique",
         "Books & Mortar",
@@ -245,6 +248,9 @@
         "Sovereign Arms Tattoo Co.",
         "Vape City Smoke Shop",
         "Vivant Brewery & Spirits",
+        "Woosah Outfitters",
+        "Zivio",
+        "Zodiac Lines Tattoo"
       ],
       11: [
         "Adored Boutique",
@@ -275,6 +281,9 @@
         "Sovereign Arms Tattoo Co.",
         "Vape City Smoke Shop",
         "Vivant Brewery & Spirits",
+        "Woosah Outfitters",
+        "Zivio",
+        "Zodiac Lines Tattoo"
       ],
       12: [
         "Black Dog Used Books and Records",
@@ -292,16 +301,16 @@
         "Stovetop Coffee Roasters",
         "The Dirty Plate Bistro",
         "Tienda Emy Latina",
-        "Urban Exchange Consignment Boutique",
+        "Urban Exchange Consignment Boutique"
       ],
       13: [
         "Art of the Table",
         "City2Shore Real Estate",
         "Dime and Regal",
         "Donkey Taqueria",
-        "Eastern Kille Distillery",
+        "Eastern Kille Distillery Tasting Room",
         "Good Truckin' Diner",
-        "Modish Moth and LadyMonarch",
+        "Modish Moth and Lady Monarch",
         "Mokaya Chocolate",
         "Niksi Home & Floral",
         "Roman James",
@@ -311,7 +320,7 @@
         "The Grey Rabbit",
         "Wanderlux Beauty & Wellness Co.",
         "Wealthy Street Bakery",
-        "Winchester, The",
+        "Winchester, The"
       ],
       14: [
         "Basic Bee Boutique",
@@ -326,16 +335,14 @@
         "Jeffrey Richard Salon",
         "Kitchen Design Studio, Inc.",
         "Mammoth Distillery",
-        "Modish Moth and LadyMonarch",
+        "Modish Moth and Lady Monarch",
         "Mokaya Chocolate",
         "Niksi Home & Floral",
         "Popnotch Goods",
         "Roman James",
         "Stoffer Home",
         "The Grey Rabbit",
-        "Wanderlux Beauty & Wellness Co.",
-        "Woosah Outfitters",
-        "Zivio",
+        "Wanderlux Beauty & Wellness Co."
       ],
       15: [
         "Electric Cheetah, The",
@@ -350,9 +357,8 @@
         "Thai Table",
         "Toppers Pizza",
         "Unwind GR",
-        "Vetr Health",
-        "Zivio",
-      ],
+        "Vetr Health"
+      ]
     };
 
     // Static stops + parking
@@ -384,8 +390,8 @@
       { type: 'parking', name: 'Parking – Monarch Investment', address: '920 Cherry St SE, Grand Rapids, MI 49506', lat: 42.95909183834129, lng: -85.64637024190142 }
     ];
 
-    // Map init – center roughly on Uptown
-    const map = L.map('map').setView([42.9585, -85.6450], 14);
+    // Map init – center roughly on Uptown (fixed, no auto-fit to trolleys)
+    const map = L.map('map').setView([42.9588, -85.6455], 15);
 
     // 🗺️ Nicer free tiles: Carto Voyager
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png', {
@@ -409,7 +415,6 @@
     });
 
     const markers = {}; // deviceId -> Leaflet marker
-    let firstFit = true;
 
     function getConfigForDevice(id) {
       const cfg = DEVICE_CONFIG[id];
@@ -437,7 +442,6 @@
         }
 
         const data = await res.json();
-        const points = [];
 
         data.forEach(pos => {
           const id = pos.deviceId;
@@ -465,15 +469,7 @@
             markers[id].setIcon(icon);
             markers[id].setPopupContent(popupHtml);
           }
-
-          points.push([lat, lng]);
         });
-
-        // Fit view to live trolleys on first successful load
-
-	const map = L.map('map').setView([42.9588, -85.6455], 15);
-
-
       } catch (err) {
         console.error('Fetch error:', err);
       }
@@ -539,5 +535,6 @@
     fetchPositions();
     setInterval(fetchPositions, 10000);
   </script>
+  
 </body>
 </html>
