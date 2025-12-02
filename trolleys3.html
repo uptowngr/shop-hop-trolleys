@@ -399,6 +399,54 @@
       attribution: '&copy; OpenStreetMap &copy; CARTO'
     }).addTo(map);
 
+		  // 🔵 Optional: show user's current location if they allow it
+let userMarker;
+let userCircle;
+
+if ('geolocation' in navigator) {
+  navigator.geolocation.watchPosition(
+    (pos) => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      const accuracy = pos.coords.accuracy || 50;
+
+      const latlng = [lat, lng];
+
+      if (!userMarker) {
+        // Small blue dot for user
+        userMarker = L.circleMarker(latlng, {
+          radius: 6,
+          weight: 2,
+          color: '#2563eb',
+          fillColor: '#60a5fa',
+          fillOpacity: 0.8
+        }).addTo(map).bindPopup('You are here');
+
+        // Faint accuracy circle
+        userCircle = L.circle(latlng, {
+          radius: accuracy,
+          weight: 1,
+          color: '#2563eb',
+          fillColor: '#bfdbfe',
+          fillOpacity: 0.2
+        }).addTo(map);
+      } else {
+        userMarker.setLatLng(latlng);
+        userCircle.setLatLng(latlng);
+        userCircle.setRadius(accuracy);
+      }
+    },
+    (err) => {
+      console.warn('Geolocation error:', err.message);
+      // do nothing if they deny or it fails
+    },
+    {
+      enableHighAccuracy: true,
+      maximumAge: 10000,
+      timeout: 20000
+    }
+  );
+}
     // Live trolley icons
     const redTrolleyIcon = L.divIcon({
       className: 'trolley-icon trolley-red',
